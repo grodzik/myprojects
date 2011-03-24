@@ -191,17 +191,19 @@ elseif !exists('myprojects_enable')
 	" Function s:openMyProjectsWindow() {{{2
 	function s:openMyProjectsWindow()
 		if !s:goToMyProjectsWindow()
-			silent execute 'leftabove vertical new'
+         if bufexists(g:myprojects_file)
+            let bufexists = 1
+         else
+            let bufexists = 0
+         endif
+			silent execute 'leftabove vertical new ' . g:myprojects_file
 
 			call s:moveWindowToTopLeftCorner()
 			call s:setWindowWidth(g:myprojects_width)
 
 			let myprojects_file = fnameescape(g:myprojects_file)
 
-			if bufexists(g:myprojects_file)
-				silent execute 'buffer ' . myprojects_file
-			else
-				silent execute 'edit ' . myprojects_file
+         if bufexists == 0
 
 				nnoremap <silent> <buffer> <LeftMouse> <LeftMouse>:echo<CR>
 				nnoremap <silent> <buffer> <S-LeftMouse> <LeftMouse>:echo<CR>
